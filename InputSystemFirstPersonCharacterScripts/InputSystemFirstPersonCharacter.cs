@@ -21,7 +21,7 @@ public class InputSystemFirstPersonCharacter : MonoBehaviour
     private bool grounded;
 
     // Zoom Vars - Zoom code adapted from @torahhorse's First Person Drifter scripts.
-    public float zoomFOV = 30.0f;
+    public float zoomFOV = 35.0f;
     public float zoomSpeed = 9f;
     private float targetFOV;
     private float baseFOV;
@@ -50,23 +50,24 @@ public class InputSystemFirstPersonCharacter : MonoBehaviour
 
     private void Update()
     {
-        DoLooking();
         DoMovement();
+        DoLooking();
         DoZoom();
-        //DoCrouch();
+        DoCrouch();
     }
 
     private void DoLooking()
     {
         Vector2 looking = GetPlayerLook();
-        float mouseX = looking.x * lookSensitivity * Time.deltaTime;
-        float mouseY = looking.y * lookSensitivity * Time.deltaTime;
+        float lookX = looking.x * lookSensitivity * Time.deltaTime;
+        float lookY = looking.y * lookSensitivity * Time.deltaTime;
 
-        transform.Rotate(Vector3.up * mouseX);
-
-        xRotation -= mouseY;
+        xRotation -= lookY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        
         cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        
+        transform.Rotate(Vector3.up * lookX);
     }
 
     private void DoMovement()
@@ -100,15 +101,13 @@ public class InputSystemFirstPersonCharacter : MonoBehaviour
 
     private void DoCrouch()
     {
-        // TODO: check if underneath an object and stop at collision
         if (inputActions.FPSController.Crouch.ReadValue<float>() > 0)
         {
             controller.height = crouchHeight;
         }
         else
         {
-            // this doesn't work to check collision...
-            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.up), 0.5f))
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.up), 2.0f, -1))
             {
                 controller.height = crouchHeight;
             }
