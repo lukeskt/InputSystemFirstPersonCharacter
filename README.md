@@ -1,5 +1,7 @@
 # Input System First Person Character
 
+Tested working in 2019 LTS to 2021 LTS. Should work in tech releases also, but not tested in 2022.
+
 A very very basic first person controller and character for Unity using the new Input System
 
 It is in no way well architected or "good", but provides the most basic possible template I could think of after being baffled by the complexity of the new Standard Assets FPS controller released by Unity.
